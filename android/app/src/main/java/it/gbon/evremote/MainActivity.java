@@ -336,9 +336,10 @@ public class MainActivity extends Activity {
         box.addView(text("EV Remote " + BuildConfig.VERSION_NAME + " (" + BuildConfig.FLAVOR + ")", 16, DARK, true));
         box.addView(text("\nApp indipendente, non affiliata né approvata da Stellantis o dai suoi marchi. "
                 + "Usa lo stesso back end privato delle app ufficiali, che può cambiare in qualsiasi momento.\n\n"
-                + "Licenza GPL-3.0. Contiene o deriva da:\n"
-                + "• psa_car_controller (GPL-3.0): client OTP inWebo\n"
-                + "• homeassistant-stellantis-vehicles (MIT): protocollo, comandi, limite di ricarica, ABRP\n"
+                + "Grazie ai due progetti open source su cui è costruita, che hanno ricostruito il protocollo Stellantis:\n"
+                + "• psa_car_controller di Florian Bezannier (GPL-3.0): client OTP inWebo e API dei comandi\n"
+                + "• homeassistant-stellantis-vehicles di Andrea De Giovine (MIT): protocollo aggiornato, comandi, limite di ricarica, ABRP\n"
+                + "Licenza GPL-3.0. Contiene anche:\n"
                 + "• Eclipse Paho MQTT 1.2.5 (EPL-2.0 / EDL-1.0)\n\n"
                 + "Stellantis, Opel, Peugeot, Citroën, DS e Vauxhall sono marchi dei rispettivi proprietari.", 13, DARK, false));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
