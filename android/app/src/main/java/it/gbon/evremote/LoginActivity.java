@@ -25,8 +25,11 @@ public class LoginActivity extends Activity {
         WebView web = new WebView(this);
         web.setFitsSystemWindows(true);
         WebSettings ws = web.getSettings();
+        // The brand login page (SAP Gigya, reCAPTCHA) does not work without JavaScript and DOM storage.
         ws.setJavaScriptEnabled(true);
         ws.setDomStorageEnabled(true);
+        ws.setAllowFileAccess(false);
+        ws.setAllowContentAccess(false);
         web.clearCache(true);
         web.setWebViewClient(new WebViewClient() {
             @Override

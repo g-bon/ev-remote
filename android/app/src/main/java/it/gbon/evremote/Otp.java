@@ -105,8 +105,9 @@ public final class Otp {
         String raw = transport.get(HOST + "?" + q);
         int i = raw.indexOf("?>");
         if (i >= 0) raw = raw.substring(i + 2);
+        if (raw.contains("<!DOCTYPE") || raw.contains("<!ENTITY")) throw new OtpException("Bad response from server: DTD not allowed");
         try {
-            Element el = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+            Element el = secureFactory().newDocumentBuilder()
                     .parse(new ByteArrayInputStream(raw.trim().getBytes(StandardCharsets.UTF_8))).getDocumentElement();
             if (!root.equals(el.getTagName())) throw new OtpException("Bad response from server: " + el.getTagName());
             Map<String, String> out = new LinkedHashMap<>();
@@ -123,6 +124,29 @@ public final class Otp {
         } catch (Exception e) {
             throw new OtpException("Bad response from server");
         }
+    }
+
+    /** Parser without DTDs or external entities (XXE). Android's parser ignores unsupported features. */
+    static DocumentBuilderFactory secureFactory() {
+        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        String[][] features = {
+                {"http://apache.org/xml/features/disallow-doctype-decl", "true"},
+                {"http://xml.org/sax/features/external-general-entities", "false"},
+                {"http://xml.org/sax/features/external-parameter-entities", "false"},
+                {"http://apache.org/xml/features/nonvalidating/load-external-dtd", "false"},
+        };
+        for (String[] feature : features) {
+            try {
+                f.setFeature(feature[0], Boolean.parseBoolean(feature[1]));
+            } catch (Exception ignored) {
+            }
+        }
+        try {
+            f.setXIncludeAware(false);
+        } catch (Exception ignored) {
+        }
+        f.setExpandEntityReferences(false);
+        return f;
     }
 
     private static boolean has(Map<String, String> xml, String k) {
