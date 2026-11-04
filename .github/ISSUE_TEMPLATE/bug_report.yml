@@ -5,8 +5,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        **Never paste** passwords, PIN, SMS codes, tokens or your full VIN.
-        The "Export logs" function masks VIN, customer id and tokens, but read the text before pasting it.
+        **Never paste** passwords, PIN, SMS codes, tokens, your full VIN or where the car is parked.
+        The "Export logs" function masks VIN, customer id, vehicle id, tokens and GPS coordinates, but read the text before pasting it.
         Security problems: use *Security → Report a vulnerability* instead of a public issue.
   - type: input
     id: version

@@ -20,6 +20,7 @@ Out of scope: the Stellantis, inWebo and ABRP servers. Report problems there to 
 When you open an issue, never paste:
 - your password, PIN or SMS codes;
 - OAuth or MQTT tokens;
-- your full VIN.
+- your full VIN;
+- the GPS position of the car.
 
-The "Export logs" function already masks the VIN, the customer id and the tokens. Still, read the text before sharing it.
+The "Export logs" function already masks the VIN, the customer id, the vehicle id, the tokens and the GPS coordinates. Still, read the text before sharing it.

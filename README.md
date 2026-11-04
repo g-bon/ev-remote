@@ -54,7 +54,7 @@ Tried EV Remote with another car or country? Please [open an issue](https://gith
 - Charging start and stop, and a **charge limit** that stops charging even with the app closed.
 - Status: battery, range, charging, cable, climate, outside temperature, locks and open doors, position, odometer, 12 V battery, battery health.
 - **ABRP live data**: telemetry on every refresh, and a trip mode that sends data every minute.
-- Exportable logs with VIN, customer id and tokens masked, for troubleshooting.
+- Exportable logs with VIN, customer id, vehicle id, tokens and GPS coordinates masked, for troubleshooting.
 - Tokens and the OTP state are encrypted with a key in the Android Keystore. No servers of its own: the app talks only to Stellantis and, if enabled, to ABRP.
 
 ## Limits

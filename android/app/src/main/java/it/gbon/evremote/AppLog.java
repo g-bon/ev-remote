@@ -141,6 +141,12 @@ final class AppLog {
         if (vin != null && vin.length() > 8) text = text.replace(vin, vin.substring(0, 3) + "…" + vin.substring(vin.length() - 4));
         String cid = s.get("customer_id");
         if (cid != null && !cid.isEmpty()) text = text.replace(cid, "<customer_id>");
-        return text.replaceAll("\"(access_token|refresh_token|password)\"\\s*:\\s*\"[^\"]*\"", "\"$1\":\"<nascosto>\"");
+        String vid = s.get("vehicle_id");
+        if (vid != null && !vid.isEmpty()) text = text.replace(vid, "<vehicle_id>");
+        return text
+                .replaceAll("\"(access_token|refresh_token|password)\"\\s*:\\s*\"[^\"]*\"", "\"$1\":\"<nascosto>\"")
+                // GPS position: the REST status (GeoJSON) and the ABRP telemetry would reveal where the car is parked.
+                .replaceAll("\"coordinates\"\\s*:\\s*\\[[^\\]]*\\]", "\"coordinates\":\"<nascosto>\"")
+                .replaceAll("\"(lat|lon|latitude|longitude|elevation)\"\\s*:\\s*-?[0-9.]+", "\"$1\":\"<nascosto>\"");
     }
 }
