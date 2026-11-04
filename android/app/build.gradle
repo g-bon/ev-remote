@@ -53,8 +53,8 @@ android {
         applicationId 'it.gbon.evremote'
         minSdk 26
         targetSdk 35
-        versionCode 13
-        versionName '2.0.0'
+        versionCode 14
+        versionName '2.0.1'
         STELLANTIS_KEYS.each { buildConfigField 'String', it, quoted(stellantisValue(it)) }
         buildConfigField 'String', 'BRAND', quoted(brand)
         buildConfigField 'String', 'ABRP_API_KEY', quoted(setting('ABRP_API_KEY'))
