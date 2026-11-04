@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.crypto.Cipher;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -126,24 +127,28 @@ public final class Otp {
         }
     }
 
-    /** Parser without DTDs or external entities (XXE). Android's parser ignores unsupported features. */
+    /** Parser without DTDs or external entities (XXE). Android's parser rejects unknown features: ignore those errors. */
     static DocumentBuilderFactory secureFactory() {
         DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
-        String[][] features = {
-                {"http://apache.org/xml/features/disallow-doctype-decl", "true"},
-                {"http://xml.org/sax/features/external-general-entities", "false"},
-                {"http://xml.org/sax/features/external-parameter-entities", "false"},
-                {"http://apache.org/xml/features/nonvalidating/load-external-dtd", "false"},
-        };
-        for (String[] feature : features) {
-            try {
-                f.setFeature(feature[0], Boolean.parseBoolean(feature[1]));
-            } catch (Exception ignored) {
-            }
+        try {
+            f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        } catch (ParserConfigurationException ignored) {
+        }
+        try {
+            f.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        } catch (ParserConfigurationException ignored) {
+        }
+        try {
+            f.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        } catch (ParserConfigurationException ignored) {
+        }
+        try {
+            f.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        } catch (ParserConfigurationException ignored) {
         }
         try {
             f.setXIncludeAware(false);
-        } catch (Exception ignored) {
+        } catch (UnsupportedOperationException ignored) {
         }
         f.setExpandEntityReferences(false);
         return f;
