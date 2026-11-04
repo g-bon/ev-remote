@@ -46,15 +46,15 @@ def stellantisValue = { String key -> setting(key) ?: stellantisConfig()[key] }
 def quoted = { String v -> "\"${(v ?: '').replace('\\', '\\\\').replace('"', '\\"')}\"" }
 
 android {
-    namespace 'it.gbon.evremote'
-    compileSdk 35
+    namespace = 'it.gbon.evremote'
+    compileSdk = 35
 
     defaultConfig {
-        applicationId 'it.gbon.evremote'
-        minSdk 26
-        targetSdk 35
-        versionCode 14
-        versionName '2.0.1'
+        applicationId = 'it.gbon.evremote'
+        minSdk = 26
+        targetSdk = 35
+        versionCode = 14
+        versionName = '2.0.1'
         STELLANTIS_KEYS.each { buildConfigField 'String', it, quoted(stellantisValue(it)) }
         buildConfigField 'String', 'BRAND', quoted(brand)
         buildConfigField 'String', 'ABRP_API_KEY', quoted(setting('ABRP_API_KEY'))
@@ -64,13 +64,13 @@ android {
     flavorDimensions 'distribution'
     productFlavors {
         github {
-            dimension 'distribution'
+            dimension = 'distribution'
             buildConfigField 'String', 'KOFI_URL', quoted(findProperty('evremote.kofi') ? "https://ko-fi.com/${findProperty('evremote.kofi')}" : '')
             buildConfigField 'String', 'BMC_URL', quoted(findProperty('evremote.bmc') ? "https://buymeacoffee.com/${findProperty('evremote.bmc')}" : '')
         }
         // Google Play forbids links to external tipping in Play-distributed apps.
         play {
-            dimension 'distribution'
+            dimension = 'distribution'
             buildConfigField 'String', 'KOFI_URL', '""'
             buildConfigField 'String', 'BMC_URL', '""'
         }
@@ -80,35 +80,35 @@ android {
         release {
             def ks = setting('RELEASE_KEYSTORE_FILE')
             if (ks) {
-                storeFile file(ks)
-                storePassword setting('RELEASE_KEYSTORE_PASSWORD')
-                keyAlias setting('RELEASE_KEY_ALIAS')
-                keyPassword setting('RELEASE_KEY_PASSWORD')
+                storeFile = file(ks)
+                storePassword = setting('RELEASE_KEYSTORE_PASSWORD')
+                keyAlias = setting('RELEASE_KEY_ALIAS')
+                keyPassword = setting('RELEASE_KEY_PASSWORD')
             }
         }
     }
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled = true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            if (signingConfigs.release.storeFile != null) signingConfig signingConfigs.release
+            if (signingConfigs.release.storeFile != null) signingConfig = signingConfigs.release
         }
     }
 
     buildFeatures {
-        buildConfig true
+        buildConfig = true
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     lint {
-        abortOnError true
-        checkReleaseBuilds false
+        abortOnError = true
+        checkReleaseBuilds = false
     }
 }
 

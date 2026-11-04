@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Build: Gradle 9.8.2 and Android Gradle Plugin 9.5.0; Gradle files use the assignment syntax required by Gradle 10.
+
 ## 2.0.1
 
 - Exported logs also mask the vehicle id and the GPS coordinates (latitude, longitude, elevation), which revealed where the car is parked.
