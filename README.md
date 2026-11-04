@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/g-bon/ev-remote/actions/workflows/ci.yml/badge.svg)](https://github.com/g-bon/ev-remote/actions/workflows/ci.yml)
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-support-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/gabibon)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/gabibon)
 
 Unofficial Android app to control Stellantis electric cars (Opel, Peugeot, Citroën, DS, Vauxhall) with the e-Remote / Connect services: climate preconditioning, charging, charge limit, status and live data for [ABRP](https://abetterrouteplanner.com).
 
@@ -57,7 +59,7 @@ Flavors:
 
 ## Support the project
 
-If EV Remote is useful to you, you can support it with the **Sponsor** button of the repository.
+If EV Remote is useful to you, you can support it on [Ko-fi](https://ko-fi.com/gabibon) or [Buy Me a Coffee](https://buymeacoffee.com/gabibon), also from the **Sponsor** button of the repository or from the app (*Informazioni e licenze*).
 
 ## License
 
@@ -91,5 +93,7 @@ Token e stato OTP sono cifrati sul telefono, e l'app non ha server propri.
 - La build predefinita è per Opel Italia.
 
 **Installazione:** scarica l'APK da [Releases](https://github.com/g-bon/ev-remote/releases), verificalo come descritto sopra e aprilo sul telefono.
+
+**Sostieni il progetto** su [Ko-fi](https://ko-fi.com/gabibon) o [Buy Me a Coffee](https://buymeacoffee.com/gabibon).
 
 Licenza [GPL-3.0](LICENSE), crediti in [NOTICE](NOTICE).
