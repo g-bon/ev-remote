@@ -1,0 +1,36 @@
+EV Remote
+Copyright (C) 2026 Gabriele Bonetti
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version. See LICENSE.
+
+This project includes or is derived from the following works:
+
+1. psa_car_controller - https://github.com/flobz/psa_car_controller
+   Copyright (C) Florian Bezannier and contributors. License: GPL-3.0.
+   The inWebo OTP client (Otp.java, OtpCrypto.java) is a Java port of otp.py, load.py and oaep.py.
+   android/otp-test/pkg/otp contains the Python reference used to check the port.
+
+2. homeassistant-stellantis-vehicles - https://github.com/andreadegiovine/homeassistant-stellantis-vehicles
+   Copyright (c) 2023 Andrea De Giovine and contributors. License: MIT.
+   Protocol constants, command payloads, the charge-limit logic and the ABRP telemetry mapping are
+   based on this integration. Its configs.json is downloaded at build time (it is not redistributed
+   in this repository). The otp/ directory of that project is itself derived from psa_car_controller.
+
+   MIT License: Permission is hereby granted, free of charge, to any person obtaining a copy of this
+   software and associated documentation files (the "Software"), to deal in the Software without
+   restriction, including without limitation the rights to use, copy, modify, merge, publish,
+   distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+   Software is furnished to do so, subject to the following conditions: The above copyright notice
+   and this permission notice shall be included in all copies or substantial portions of the
+   Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+
+3. Eclipse Paho MQTT Java client 1.2.5 - https://github.com/eclipse-paho/paho.mqtt.java
+   Copyright (c) Eclipse Foundation and contributors.
+   Dual licensed under the Eclipse Public License 2.0 and the Eclipse Distribution License 1.0
+   (BSD-3-Clause). Used under the Eclipse Distribution License 1.0.
+
+Trademarks: Stellantis, Opel, Peugeot, Citroën, DS, Vauxhall, MyOpel and the other names mentioned
+are trademarks of their respective owners. EV Remote is an independent project, not affiliated with,
+endorsed or sponsored by Stellantis N.V. or any of its brands.

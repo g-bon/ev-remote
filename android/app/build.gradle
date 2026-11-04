@@ -1,0 +1,117 @@
+import groovy.json.JsonSlurper
+import java.security.MessageDigest
+
+plugins {
+    id 'com.android.application'
+}
+
+// OAuth client of the official mobile apps. Never committed: taken, in order, from environment variables,
+// from the git-ignored app/stellantis.properties, or from configs.json of homeassistant-stellantis-vehicles
+// downloaded at a pinned commit and verified with SHA-256.
+def CONFIGS_COMMIT = 'df66295bae1b69222cd032b697dee5dba668a46a'
+def CONFIGS_SHA256 = '2e96bcc422beb6cf105fe013313632ea2a5cf6af1c303f459f1faa9421185ca1'
+def CONFIGS_URL = "https://raw.githubusercontent.com/andreadegiovine/homeassistant-stellantis-vehicles/${CONFIGS_COMMIT}/custom_components/stellantis_vehicles/configs.json"
+def STELLANTIS_KEYS = ['CLIENT_ID', 'CLIENT_SECRET', 'REALM', 'OAUTH_URL', 'SCHEME', 'LOCALE', 'CULTURE']
+
+def localProps = new Properties()
+def localFile = file('stellantis.properties')
+if (localFile.exists()) localFile.withInputStream { localProps.load(it) }
+
+def brand = findProperty('evremote.brand') ?: 'MyOpel'
+def country = findProperty('evremote.country') ?: 'IT'
+
+def sha256 = { File f -> MessageDigest.getInstance('SHA-256').digest(f.bytes).encodeHex().toString() }
+
+def stellantisConfig = {
+    def cache = new File(rootDir, ".gradle/stellantis/configs-${CONFIGS_COMMIT}.json")
+    if (!cache.exists() || sha256(cache) != CONFIGS_SHA256) {
+        cache.parentFile.mkdirs()
+        logger.lifecycle("Downloading configs.json (${CONFIGS_COMMIT.take(7)})")
+        new URL(CONFIGS_URL).withInputStream { input -> cache.withOutputStream { it << input } }
+        if (sha256(cache) != CONFIGS_SHA256) {
+            cache.delete()
+            throw new GradleException('configs.json: SHA-256 mismatch')
+        }
+    }
+    def app = new JsonSlurper().parse(cache)[brand]
+    if (app == null) throw new GradleException("Unknown brand ${brand}")
+    def c = app.configs[country]
+    if (c == null) throw new GradleException("Country ${country} not available for ${brand}")
+    [CLIENT_ID: c.client_id, CLIENT_SECRET: c.client_secret, REALM: app.realm, OAUTH_URL: app.oauth_url,
+     SCHEME: app.scheme, LOCALE: c.locale, CULTURE: country.toLowerCase()]
+}.memoize()
+
+def setting = { String key -> System.getenv(key) ?: localProps.getProperty(key) }
+def stellantisValue = { String key -> setting(key) ?: stellantisConfig()[key] }
+def quoted = { String v -> "\"${(v ?: '').replace('\\', '\\\\').replace('"', '\\"')}\"" }
+
+android {
+    namespace 'it.gbon.evremote'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'it.gbon.evremote'
+        minSdk 26
+        targetSdk 35
+        versionCode 13
+        versionName '2.0.0'
+        STELLANTIS_KEYS.each { buildConfigField 'String', it, quoted(stellantisValue(it)) }
+        buildConfigField 'String', 'BRAND', quoted(brand)
+        buildConfigField 'String', 'ABRP_API_KEY', quoted(setting('ABRP_API_KEY'))
+        buildConfigField 'String', 'SOURCE_URL', quoted('https://github.com/g-bon/ev-remote')
+    }
+
+    flavorDimensions 'distribution'
+    productFlavors {
+        github {
+            dimension 'distribution'
+            buildConfigField 'String', 'KOFI_URL', quoted(findProperty('evremote.kofi') ? "https://ko-fi.com/${findProperty('evremote.kofi')}" : '')
+            buildConfigField 'String', 'BMC_URL', quoted(findProperty('evremote.bmc') ? "https://buymeacoffee.com/${findProperty('evremote.bmc')}" : '')
+        }
+        // Google Play forbids links to external tipping in Play-distributed apps.
+        play {
+            dimension 'distribution'
+            buildConfigField 'String', 'KOFI_URL', '""'
+            buildConfigField 'String', 'BMC_URL', '""'
+        }
+    }
+
+    signingConfigs {
+        release {
+            def ks = setting('RELEASE_KEYSTORE_FILE')
+            if (ks) {
+                storeFile file(ks)
+                storePassword setting('RELEASE_KEYSTORE_PASSWORD')
+                keyAlias setting('RELEASE_KEY_ALIAS')
+                keyPassword setting('RELEASE_KEY_PASSWORD')
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (signingConfigs.release.storeFile != null) signingConfig signingConfigs.release
+        }
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        abortOnError true
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
+}

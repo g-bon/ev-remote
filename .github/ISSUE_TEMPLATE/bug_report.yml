@@ -1,0 +1,41 @@
+name: Bug report
+description: Something does not work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Never paste** passwords, PIN, SMS codes, tokens or your full VIN.
+        The "Export logs" function masks VIN, customer id and tokens, but read the text before pasting it.
+        Security problems: use *Security → Report a vulnerability* instead of a public issue.
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      placeholder: "2.0.0"
+    validations:
+      required: true
+  - type: input
+    id: car
+    attributes:
+      label: Brand, model, country
+      placeholder: "Opel Corsa-e 2021, Italy"
+    validations:
+      required: true
+  - type: input
+    id: android
+    attributes:
+      label: Phone and Android version
+      placeholder: "Pixel 8, Android 16"
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Exported logs (masked)
+      description: Activity card → "Esporta log". Paste only the relevant part.
+      render: text

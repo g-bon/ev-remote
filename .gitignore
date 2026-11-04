@@ -1,0 +1,24 @@
+# Credentials and signing material: never commit
+stellantis.properties
+keystore.properties
+*.jks
+*.keystore
+*.p12
+.env
+.env.*
+
+# Build output
+*.apk
+*.aab
+build/
+.gradle/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+
+# IDE and OS
+.idea/
+*.iml
+.DS_Store
+__pycache__/
